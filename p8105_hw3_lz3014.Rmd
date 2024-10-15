@@ -1,0 +1,10 @@
+---
+title: "p8105_hw3_lz3014"
+auther: "Liqi Zhou"
+date: 2024-10-14
+output: github_document
+---
+
+```{r}
+library(tidyverse)
+```
