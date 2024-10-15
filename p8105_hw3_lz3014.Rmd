@@ -34,7 +34,51 @@ ny_noaa_clean |>
   arrange(desc(n))
 ```
 
+### 3.Make a two-panel plot showing the average max temperature in January and in July in each station across years.
+```{r}
+ny_noaa_clean |>
+  filter(month %in% c(1, 7)) |>
+  group_by(id, year, month) |>
+  summarise(mean_tmax = mean(tmax, na.rm = TRUE)) |>
+  ggplot(aes(x = year, y = mean_tmax, color = as.factor(month))) +
+  geom_point() +
+  geom_line() +
+  facet_wrap(~ month, scales = "free_y") +
+  labs(
+    title = "Average Max Temperature in January and July across Stations",
+    x = "Year",
+    y = "Average Max Temperature (°C)",
+    color = "Month"
+  )
+```
 
+- Is there any observable / interpretable structure? Any outliers?
+the mean temperature in January is significantly lower than in July across all stations and years. Stations generally show similar temperature trends over time—when one station records a higher temperature for a given year, others tend to follow the same pattern. However, we observe an unusually cold station in July of 1987 or 1988, along with a few other minor outliers.
 
+### 4.Make a two-panel plot
+- (i) tmax vs tmin for the full dataset (note that a scatterplot may not be the best option)
+```{r}
+ny_noaa_clean |>
+  ggplot(aes(x = tmin, y = tmax)) +
+  geom_point(alpha = 0.3) +
+  geom_smooth(method = "lm", color = "lightblue", se = FALSE) + 
+  labs(
+    title = "Tmax vs Tmin",
+    x = "Minimum Temperature (°C)",
+    y = "Maximum Temperature (°C)"
+  )
+```
 
-
+- (ii) make a plot showing the distribution of snowfall values greater than 0 and less than 100 separately by year.
+```{r}
+ny_noaa_clean |>
+  filter(snow > 0, snow < 100) |>
+  ggplot(aes(x = snow)) +
+  geom_histogram(binwidth = 5, fill = "lightblue", color = "lightyellow") +
+  facet_wrap(~ year) +
+  labs(
+    title = "Distribution of Snowfall by Year",
+    x = "Snowfall",
+    y = "Count"
+  )
+```
