@@ -255,6 +255,21 @@ citibike_NYC <- bind_rows(jan_2020, july_2020, jan_2024, july_2024) |>
 citibike_NYC
 ```
 
-**Describe the resulting dataset:**
+**Describe the resulting dataset:**  
 - After cleaning and tidying, dataset `jan_2020` has `r nrow(jan_2020)` rows and `r ncol(jan_2020)` columns, dataset `july_2020` has `r nrow(july_2020)` rows and `r ncol(july_2020)` columns, dataset `jan_2024` has `r nrow(jan_2024)` rows and `r ncol(jan_2024)` columns, dataset `july_2024` has `r nrow(july_2024)` rows and `r ncol(july_2024)` columns.  
 - Finally, we combine these four datasets into `citibike_NYC` which has `r nrow(citibike_NYC)` rows and `r ncol(citibike_NYC)` columns. It has information on Citi Bike rides in New York City in January 2020, July 2020, January 2024 and July 2024, including variables named *ride_id*, *rideable_type*, *weekdays*, *duration* and so on. 
+
+### 2.Produce a reader-friendly table showing the total number of rides in each combination of year and month separating casual riders and Citi Bike members.
+```{r}
+rides_num_total <- citibike_NYC |>
+  group_by(year, month, member_casual) |>
+  summarise(total_rides = n()) |>
+  arrange(year, month) |>
+  select(year, month, member_casual, total_rides) |>
+  knitr::kable()
+rides_num_total
+```
+
+**Comment:**  
+-There is a clear seasonal trend, with higher ride counts in July compared to January across both 2020 and 2024. This suggests that warmer months have more bike usage.   
+- Additionally, member riders consistently outnumber casual riders in every period, indicating that the Citi Bike system is more frequently used by regular, subscribed users.
