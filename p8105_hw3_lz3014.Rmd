@@ -146,7 +146,7 @@ mims_tidy |>
   theme_minimal()
 ```
 
- **comment:**  
+**comment:**  
 - The `table` shows that the *"Less than high school"* level has the largest number of participants, and the distribution between men and women is relatively balanced in *"Less than high school"* and *"More than high school"*education levels. However, in the "High school equivalent" group, the number of men is much higher than the number of women.  
 - The density `plot` shows that older individuals are more concentrated in the "Less than high school" group, while younger and middle-aged individuals are more evenly distributed in the "More than high school" group. There are also some gender differences in age distribution, particularly in the "More than high school" category.
 
@@ -184,4 +184,40 @@ mims_total_activity |>
 **Comment:**  
 - The plot shows that total activity generally decreases with age, especially for those with *"Less than a high school"* education level. In the *"High school equivalent"*, women's activity show more pronounced fluctuations. In the *"More than high school"* group, both sexes show similar trends.In the latter two groups, women are more numerous and maintain slightly higher activity while in *"Less than a high school"* men are more numerous than women across most age.
 
+### 4.Make a three-panel plot that shows the 24-hour activity time courses for each education level and use color to indicate sex. 
+```{r}
+# calculate 24-hour activity data for each education level and sex
+mims_hourly_activity <- mims_tidy |>
+  select(seqn, sex, age, education, mins, accel_min_data) |>
+  mutate(hour = floor((mins - 1) / 60) + 1) |>
+  group_by(seqn, sex, age, education, hour) |>
+  summarise(hour_activity = sum(accel_min_data, na.rm = TRUE)) |>
+  ungroup()
 
+edu_hourly_activity <- mims_hourly_activity |>
+  group_by(education, hour, sex) |>
+  summarise(edu_total_activity = sum(hour_activity, na.rm = TRUE)) |>
+  ungroup()
+```
+
+```{r}
+edu_hourly_activity |>
+  ggplot(aes(x = hour, y = edu_total_activity, color = sex)) +  
+  geom_point(alpha = 0.6) + 
+  geom_smooth(method = "loess", se = FALSE) +  
+  facet_wrap(~ education) + 
+  labs(
+    title = "24-Hour Activity Time Course by Education Level and Sex",
+    x = "Time of Day",
+    y = "Activity",
+    color = "Sex"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+```
+
+**Describe this graph:**  
+- The graph shows clear activity peaks around 11 AM to 5 PM across all education levels.  
+- The *"More than high school"* education level has the highest activity values, with women being much more active than men.  
+- In the *"High school equivalent"* group, men show higher activity than women.  
+- In the *"Less than high school"* level, the activities of men and women are similar throughout 24 hours.
