@@ -8,3 +8,33 @@ output: github_document
 ```{r}
 library(tidyverse)
 ```
+
+
+# Problem 1
+```{r}
+library(p8105.datasets)
+data("ny_noaa")
+```
+
+### 1.Write a short description of the dataset.
+This dataset contains `r nrow(ny_noaa)` rows and `r ncol(ny_noaa)` columns, including seven variables: `id` (weather station id), `date` (date of observation), `prcp` (total daily precipitation), `snow` (snowfall), `snwd` (snow depth), `tmax` and `tmin` (min and max temperature).
+
+### 2.Do some data cleaning. 
+```{r}
+ny_noaa_clean <- ny_noaa |>
+  separate(date, into = c("year", "month", "day"), convert = TRUE) |>
+  mutate(tmax = as.numeric(tmax), tmin = as.numeric(tmin))
+```
+
+- For snowfall, what are the most commonly observed values? Why?
+0 is the most commonly observed value for snowfall, because most days of the year, it does not snow in NY.
+```{r}
+ny_noaa_clean |>
+  count(snow) |>
+  arrange(desc(n))
+```
+
+
+
+
+
