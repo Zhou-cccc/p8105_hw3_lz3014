@@ -299,7 +299,7 @@ ride_median_duration |>
   labs(
     title = "Effect of Day of Week, Month, and Year on Median Ride Duration",
     x = "Day of the Week",
-    y = "Median Ride Duration (Minutes)",
+    y = "Median Ride Duration (minutes)",
     color = "Year"
   ) +
   theme_minimal() +
@@ -308,3 +308,23 @@ ride_median_duration |>
 
 **Comment:**  
 - From the plot, `[year]`in 2024, the ride durations appear slightly lower compared to 2020, especially in July, which might indicate improved riding efficiency or other external factors such as better infrastructure. `[month]`It can be observed that ride durations tend to be longer in January than in July for both 2020 and 2024. `[week]`Saturday tends to have higher median ride durations compared to other days of the week. We can konw from the plot that seasonal and weekly effects are significant factors influencing ride duration.
+
+### 5.For data in 2024, make a figure that shows the impact of month, membership status, and bike type on the distribution of ride duration. 
+```{r}
+citibike_NYC |> 
+  filter(year == 2024) |>
+  ggplot(aes(x = duration, fill = member_casual)) +
+  geom_density(alpha = 0.5) +
+  facet_grid(rideable_type ~ month) +
+  labs(title = "Impact of Month, Membership Status, and Bike Type on Ride Duration (2024)", 
+       x = "Ride Duration (minutes)", 
+       y = "Density", 
+       fill = "Membership") +
+  theme_minimal()
+```
+
+**Comment:**  
+- Ride duration: Ride durations are generally short, with most rides under 50 minutes.  
+- Membership status: Members tend to have slightly shorter ride durations compared to casual riders, since the peaks in the member curves is closer to zero durition line.  
+- Bike type: Electric bikes show slightly shorter ride durations compared to classic bikes, especially among casual riders.  
+- Month impact: The month impacts ride duration, with July showing longer rides compared to January for both bike types and user categories.
