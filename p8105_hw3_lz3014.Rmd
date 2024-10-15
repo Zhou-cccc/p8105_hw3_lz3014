@@ -273,3 +273,15 @@ rides_num_total
 **Comment:**  
 -There is a clear seasonal trend, with higher ride counts in July compared to January across both 2020 and 2024. This suggests that warmer months have more bike usage.   
 - Additionally, member riders consistently outnumber casual riders in every period, indicating that the Citi Bike system is more frequently used by regular, subscribed users.
+
+### 3.Make a table showing the 5 most popular starting stations for July 2024; include the number of rides originating from these stations.
+```{r}
+popular_stations_july_2024 <- citibike_NYC |>
+  filter(year == "2024", month == "july") |>
+  count(start_station_name, sort = TRUE) |>
+  top_n(5) |>
+  rename(number_of_rides = n) |>
+  knitr::kable()
+popular_stations_july_2024
+```
+
