@@ -82,3 +82,45 @@ ny_noaa_clean |>
     y = "Count"
   )
 ```
+
+
+# Problem 2
+### 1.Load, tidy, merge, and otherwise organize the data sets.
+```{r}
+covar <- read_csv(file = "./data/nhanes_covar.csv", skip = 4, na = c("NA",".","")) |>
+  janitor::clean_names() |>
+  filter(age >= 21) |>
+  drop_na()
+
+accel <- read_csv(file = "./data/nhanes_accel.csv", na = c("NA",".","")) |>
+  janitor::clean_names() |>
+  drop_na()
+```
+
+- merge and tidy
+```{r}
+mims <- covar |>
+  left_join(accel, by = "seqn")
+
+mims_tidy <- 
+  pivot_longer(
+    mims,
+    min1:min1440,
+    names_to = "mins",
+    names_prefix = "min",
+    values_to = "accel_min_data"
+  ) |>
+  mutate(mins = as.numeric(mins))
+```
+
+- encode data with reasonable variable classes
+```{r}
+mims_tidy <- mims_tidy |>
+  mutate(sex = factor(sex, levels = c(1, 2), 
+                      labels = c("Male", "Female")), 
+         education = factor(education, levels = c(1, 2, 3), 
+                            labels = c("Less than high school", "High school equivalent", "More than high school")))
+mims_tidy
+```
+
+
