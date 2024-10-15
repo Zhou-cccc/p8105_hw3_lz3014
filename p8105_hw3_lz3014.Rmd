@@ -123,4 +123,30 @@ mims_tidy <- mims_tidy |>
 mims_tidy
 ```
 
+### 2.Produce a reader-friendly table for the number of men and women in each education category 
+```{r}
+sex_tb <- mims_tidy |>
+  group_by(education, sex) |>
+  summarise(n_obs = n()) |>
+  knitr::kable()
+sex_tb
+```
+
+- create a visualization of the age distributions for men and women in each education category.
+```{r}
+mims_tidy |>
+  ggplot(aes(x = age, fill = sex, color = sex)) + 
+  geom_density(alpha = 0.5) +  
+  facet_grid(. ~ education) +  
+  labs(
+    title = "Age Distribution by Gender and Education Level",
+    x = "Age",
+    y = "Density"
+  ) +
+  theme_minimal()
+```
+
+ **comment:**  
+- The `table` shows that the *"Less than high school"* level has the largest number of participants, and the distribution between men and women is relatively balanced in *"Less than high school"* and *"More than high school"*education levels. However, in the "High school equivalent" group, the number of men is much higher than the number of women.
+- The density `plot` shows that older individuals are more concentrated in the "Less than high school" group, while younger and middle-aged individuals are more evenly distributed in the "More than high school" group. There are also some gender differences in age distribution, particularly in the "More than high school" category.
 
