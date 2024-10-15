@@ -285,3 +285,26 @@ popular_stations_july_2024 <- citibike_NYC |>
 popular_stations_july_2024
 ```
 
+### 4.Make a plot to investigate the effects of day of the week, month, and year on median ride duration.
+```{r}
+ride_median_duration <- citibike_NYC |>
+  group_by(year, month, weekdays) |>
+  summarise(median_duration = median(duration, na.rm = TRUE)) |>
+  ungroup()
+
+ride_median_duration |>
+  ggplot(aes(x = weekdays, y = median_duration, color = as.factor(month))) +
+  geom_point() +  
+  facet_grid(. ~ year) +
+  labs(
+    title = "Effect of Day of Week, Month, and Year on Median Ride Duration",
+    x = "Day of the Week",
+    y = "Median Ride Duration (Minutes)",
+    color = "Year"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+```
+
+**Comment:**  
+- From the plot, `[year]`in 2024, the ride durations appear slightly lower compared to 2020, especially in July, which might indicate improved riding efficiency or other external factors such as better infrastructure. `[month]`It can be observed that ride durations tend to be longer in January than in July for both 2020 and 2024. `[week]`Saturday tends to have higher median ride durations compared to other days of the week. We can konw from the plot that seasonal and weekly effects are significant factors influencing ride duration.
