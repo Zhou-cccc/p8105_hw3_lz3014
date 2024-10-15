@@ -5,7 +5,7 @@ date: 2024-10-14
 output: github_document
 ---
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 library(tidyverse)
 ```
 
@@ -26,8 +26,8 @@ ny_noaa_clean <- ny_noaa |>
   mutate(tmax = as.numeric(tmax), tmin = as.numeric(tmin))
 ```
 
-- For snowfall, what are the most commonly observed values? Why?
-0 is the most commonly observed value for snowfall, because most days of the year, it does not snow in NY.
+For snowfall, what are the most commonly observed values? Why?  
+- 0 is the most commonly observed value for snowfall, because most days of the year, it does not snow in NY.
 ```{r}
 ny_noaa_clean |>
   count(snow) |>
@@ -52,11 +52,11 @@ ny_noaa_clean |>
   )
 ```
 
-- Is there any observable / interpretable structure? Any outliers?
-the mean temperature in January is significantly lower than in July across all stations and years. Stations generally show similar temperature trends over time—when one station records a higher temperature for a given year, others tend to follow the same pattern. However, we observe an unusually cold station in July of 1987 or 1988, along with a few other minor outliers.
+Is there any observable / interpretable structure? Any outliers?  
+- the mean temperature in January is significantly lower than in July across all stations and years. Stations generally show similar temperature trends over time—when one station records a higher temperature for a given year, others tend to follow the same pattern. However, we observe an unusually cold station in July of 1987 or 1988, along with a few other minor outliers.
 
 ### 4.Make a two-panel plot
-- (i) tmax vs tmin for the full dataset (note that a scatterplot may not be the best option)
+- i) tmax vs tmin for the full dataset
 ```{r}
 ny_noaa_clean |>
   ggplot(aes(x = tmin, y = tmax)) +
@@ -69,7 +69,7 @@ ny_noaa_clean |>
   )
 ```
 
-- (ii) make a plot showing the distribution of snowfall values greater than 0 and less than 100 separately by year.
+- ii) make a plot showing the distribution of snowfall values greater than 0 and less than 100 separately by year.
 ```{r}
 ny_noaa_clean |>
   filter(snow > 0, snow < 100) |>
